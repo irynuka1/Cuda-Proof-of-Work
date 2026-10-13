@@ -1,8 +1,18 @@
-- Directorul cpu_miner conține implementarea serială, pe CPU. Acesta nu face parte din rezolvarea temei. Scopul codului este de a înțelege funcționalitatea pe CPU, ca apoi să optimizați căutarea nonce-ului si generarea Merkle root-ului pe GPU, folosind CUDA.
-- Aceasta este o abordare simplistă a calculării unui block hash, cu complexitate redusă. Nu reflectă implementarea reală a algoritmilor de consens POW, având scop pur educativ.
+# CPU Miner
 
-Pasi pentru rulare:
+Sequential reference implementation of the proof-of-work miner, written in C.
 
-1. To compile: make
-2. To run: make run TEST=<TEST_NAME>. Example: make run TEST=test4
-3. To clean: make clean
+- `src/utils.c` – Merkle root construction and linear nonce search (`nonce = 0, 1, 2, ...`).
+- `src/sha256.c` – SHA-256 implementation.
+- Shared driver: `../common/miner.cpp` (compiled as C with `-x c`).
+
+## Usage
+
+```bash
+mkdir -p output
+make                 # compile with gcc (via sbatch)
+make run TEST=test1  # run a test from ../tests
+make clean
+```
+
+Use its output as the correctness and performance baseline for `../gpu_miner`.

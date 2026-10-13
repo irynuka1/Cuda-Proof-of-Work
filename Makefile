@@ -27,6 +27,12 @@ build:
 run:
 	@sbatch $(GRES) --time $(TIME) --partition $(PARTITION) --wrap="$(MODULE) ./$(EXEC) $(TEST)"
 
+local: compile
+
+local-run: compile
+	@mkdir -p output
+	./$(EXEC) $(TEST)
+
 compile: $(EXEC)
 
 $(EXEC): $(OBJS)
@@ -41,4 +47,4 @@ $(SRC_DIR)/%.o: $(SRC_DIR)/%.$(SRC_EXT)
 clean:
 	rm -f $(SRC_DIR)/*.o output/* $(EXEC) slurm-*.out slurm-*.err profile.ncu-rep
 
-.PHONY: build run compile clean
+.PHONY: build run local local-run compile clean
